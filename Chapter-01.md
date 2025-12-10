@@ -1,6 +1,7 @@
 **Central**
 
 The number of concurrent console users, which mostly affects its overall CPU usage and might require an increase in CPU requests.
+
 RHACS Central services consist of two components, Central and Scanner; the latter is also known as StackRox Scanner. 
 **Scanner**
 
