@@ -86,3 +86,53 @@ spec:
     telemetry:
       enabled: false
 ```
+You can enable OpenShift monitoring integration by setting the monitoring attribute and configuring monitoring endpoints of any services to expose.
+```
+spec:
+  monitoring:
+    openshift:
+      enabled: true
+  ...output omitted...
+  central:
+    monitoring:
+      exposeEndpoint: Enabled
+  ...output omitted...
+  scanner:
+    monitoring:
+      exposeEndpoint: Enabled
+  ...output omitted...
+  scannerV4:
+    monitoring:
+      exposeEndpoint: Disabled
+```
+Customize Central Hostname
+
+```
+spec:
+  central:
+    exposure:
+      route:
+        enabled: true
+        host: custom-hostname.my.cluster.com
+```
+DB Storage 
+```
+spec:
+  central:
+    db:
+      persistence:
+        persistentVolumeClaim:
+          claimName: central-db-claim     
+          size: 200Gi                     
+          storageClassName: ssd-storage 
+```
+
+
+#### Default Password for Central Login 
+
+```
+[user@host ~]$ oc -n stackrox extract secrets/central-htpasswd \
+  --keys password --to -
+# password
+y3sIavTsas5sgdsgdgsy568567856LSmdG8
+```
