@@ -126,7 +126,11 @@ spec:
           size: 200Gi                     
           storageClassName: ssd-storage 
 ```
-
+#### Access Central URL WebUI
+```
+-> oc get route -n strackrox
+-> Over Browser https://url
+```
 
 #### Default Password for Central Login 
 
