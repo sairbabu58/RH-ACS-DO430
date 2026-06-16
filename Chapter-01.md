@@ -140,3 +140,113 @@ spec:
 # password
 y3sIavTsas5sgdsgdgsy568567856LSmdG8
 ```
+
+
+#### Central-config.yaml
+
+```
+---
+apiVersion: platform.stackrox.io/v1alpha1
+kind: Central
+metadata:
+  name: central
+  namespace: stackrox
+spec:
+  monitoring:
+    openshift:
+      enabled: true
+  network:
+    policies: Enabled
+  central:
+    notifierSecretsEncryption:
+      enabled: false
+    exposure:
+      loadBalancer:
+        enabled: false
+        port: 443
+      nodePort:
+        enabled: false
+      route:
+        enabled: true
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 750m
+      limits:
+        memory: 2Gi
+        cpu: 2
+    telemetry:
+      enabled: true
+    db:
+      isEnabled: Default
+      persistence:
+        persistentVolumeClaim:
+          claimName: central-db
+          size: 10Gi
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 750m
+        limits:
+          memory: 4Gi
+          cpu: 2
+  egress:
+    connectivityPolicy: Online
+  scannerV4:
+    db:
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 500m
+        limits:
+          memory: 4Gi
+          cpu: 2
+      persistence:
+        persistentVolumeClaim:
+          storageClassName: lvms-vg1
+          size: 35Gi
+    indexer:
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 500m
+        limits:
+          memory: 1Gi
+          cpu: 1
+    matcher:
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 500m
+        limits:
+          memory: 4Gi
+          cpu: 4
+    scannerComponent: Enabled
+  scanner:
+    analyzer:
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 500m
+        limits:
+          memory: 2Gi
+          cpu: 2
+    db:
+      resources:
+        requests:
+          memory: 1Gi
+          cpu: 500m
+        limits:
+          memory: 4Gi
+          cpu: 2
+...
+```
