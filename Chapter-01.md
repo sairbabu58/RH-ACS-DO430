@@ -291,3 +291,10 @@ route.route.openshift.io/central-mtls   central.stackrox                        
 [student@workstation ~]$ 
 ```
 
+#### Get the Central console username and password
+
+```
+$ oc extract secret/central-htpasswd --keys password --to -
+$ oc get route -n stackrox
+$ https://url - over browser
+```
