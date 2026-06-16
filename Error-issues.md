@@ -1,6 +1,6 @@
 ## Error and Issues
 
--> If SecuredCluster instance created 1st before InitBundle.yaml applied
+**-> If SecuredCluster instance created 1st before InitBundle.yaml applied. 1st applyed Initbundle.yaml - Delete securedcluster instance and recreate securedcluster**
 ```
 [student@workstation ~]$ oc describe securedcluster managed-cluster
 ...output omitted...
@@ -20,3 +20,5 @@ Status:
                            * init-bundle secret "collector-tls" does not exist in namespace "stackrox", please make sure you have downloaded init-bundle secrets (from UI or with roxctl) and created corresponding resources in the correct namespace: secrets "collector-tls" not found
 ...output omitted...
 ```
+
+-> 
