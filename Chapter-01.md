@@ -313,6 +313,8 @@ $ https://url - over browser
 
 ## Secure Cluster Process
 
+**Note: Always 1st apply initbundle.yaml then create secure cluster instance**
+
 #### How to generate INITBundles
 ```
 -> open the RHACS WebUI
