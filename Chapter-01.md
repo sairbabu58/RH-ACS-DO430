@@ -9,6 +9,8 @@
 ## How to add hub cluster to RHACM 
 
 
+
+
 **Central**
 
 The number of concurrent console users, which mostly affects its overall CPU usage and might require an increase in CPU requests.
