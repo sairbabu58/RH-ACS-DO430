@@ -250,3 +250,44 @@ spec:
           cpu: 2
 ...
 ```
+```
+[student@workstation ~]$ oc get po,pvc,deploy,svc,route
+NAME                                      READY   STATUS    RESTARTS   AGE
+pod/central-66457d6f9d-wqvc4              1/1     Running   0          9m17s
+pod/central-db-6dc57777f7-l7799           1/1     Running   0          9m17s
+pod/config-controller-775f7bbb47-vgh9c    1/1     Running   0          9m17s
+pod/scanner-db-5ff649f95-vdgrp            1/1     Running   0          9m17s
+pod/scanner-ffdbc688b-jwcpl               1/1     Running   0          9m17s
+pod/scanner-v4-db-74c48ddb77-fbttg        1/1     Running   0          9m17s
+pod/scanner-v4-indexer-5d8fd89b96-vqxv4   1/1     Running   0          9m17s
+pod/scanner-v4-matcher-55f45577cb-vg4wm   1/1     Running   0          9m17s
+
+NAME                                  STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/central-db      Bound    pvc-f56c18b6-4ebe-4085-90cd-2b8990786213   10Gi       RWO            nfs-storage    <unset>                 9m28s
+persistentvolumeclaim/scanner-v4-db   Bound    pvc-c8f07cee-3ff7-45c6-9aa4-c2364430c0ea   35Gi       RWO            lvms-vg1       <unset>                 9m17s
+
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/central              1/1     1            1           9m17s
+deployment.apps/central-db           1/1     1            1           9m17s
+deployment.apps/config-controller    1/1     1            1           9m17s
+deployment.apps/scanner              1/1     1            1           9m17s
+deployment.apps/scanner-db           1/1     1            1           9m17s
+deployment.apps/scanner-v4-db        1/1     1            1           9m17s
+deployment.apps/scanner-v4-indexer   1/1     1            1           9m17s
+deployment.apps/scanner-v4-matcher   1/1     1            1           9m17s
+
+NAME                         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+service/central              ClusterIP   172.30.250.221   <none>        443/TCP,9091/TCP    9m17s
+service/central-db           ClusterIP   172.30.147.209   <none>        5432/TCP            9m17s
+service/scanner              ClusterIP   172.30.201.18    <none>        8080/TCP,8443/TCP   9m17s
+service/scanner-db           ClusterIP   172.30.75.55     <none>        5432/TCP            9m17s
+service/scanner-v4-db        ClusterIP   172.30.12.59     <none>        5432/TCP            9m17s
+service/scanner-v4-indexer   ClusterIP   None             <none>        8443/TCP,9091/TCP   9m17s
+service/scanner-v4-matcher   ClusterIP   None             <none>        8443/TCP,9091/TCP   9m17s
+
+NAME                                    HOST/PORT                                PATH   SERVICES   PORT    TERMINATION   WILDCARD
+route.route.openshift.io/central        central-stackrox.apps.ocp4.example.com          central    https   passthrough   None
+route.route.openshift.io/central-mtls   central.stackrox                                central    https   passthrough   None
+[student@workstation ~]$ 
+```
+
