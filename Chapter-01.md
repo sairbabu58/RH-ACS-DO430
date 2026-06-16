@@ -446,3 +446,17 @@ spec:
           cpu: 1
 ...
 ```
+
+
+#### Basic Validation
+
+```
+$ oc get po -n stackrox
+$ watch oc get deploy,daemonset,svc  -l app.kubernetes.io/instance=managed-cluster
+```
+
+```
+-> RHACS WebUI
+-> Bashboard
+-> Risk
+```
