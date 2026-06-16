@@ -1,3 +1,14 @@
+## RHACM operator installation
+## ACS Central configuration - Customization
+## How to get default username/password
+## How to access ACS webui
+
+## Install Secured Cluster
+## Secure Cluster - custom resources
+## How to generate InitBundles
+## How to add hub cluster to RHACM 
+
+
 **Central**
 
 The number of concurrent console users, which mostly affects its overall CPU usage and might require an increase in CPU requests.
@@ -297,4 +308,141 @@ route.route.openshift.io/central-mtls   central.stackrox                        
 $ oc extract secret/central-htpasswd --keys password --to -
 $ oc get route -n stackrox
 $ https://url - over browser
+```
+
+
+## Secure Cluster Process
+
+#### How to generate INITBundles
+```
+-> open the RHACS WebUI
+  -> Cluster
+  -> Create Init Bundle
+    -> Name: Install-import-cluster
+    -> Platform of Secure cluster:
+        - OpenShift
+    -> Download
+$ oc apply -f file.yaml
+```
+
+#### Now Install Secure Cluster
+```
+-> Go to OperatorHuB
+-> (Install RHACS Operator) RHACS Operator
+-> Secure Cluster
+-> Form View / Yaml view
+-> Add the Endpoints for your Central cluster https://central-stackrox.apps.ocp4.example.com:443 [## https optional]
+```
+#### Custom Secure Cluster yaml
+```
+---
+apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  name: managed-cluster
+  namespace: stackrox
+spec:
+  centralEndpoint: "central-stackrox.apps.ocp4.example.com:443"
+  clusterName: central-cluster
+  clusterLabels:
+    cluster: central-cluster
+  monitoring:
+    openshift:
+      enabled: true
+  auditLogs:
+    collection: Auto
+  sensor:
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 250m
+      limits:
+        memory: 4Gi
+        cpu: 2
+  admissionControl:
+    listenOnCreates: true
+    listenOnUpdates: true
+    listenOnEvents: true
+    replicas: 1
+    bypass: BreakGlassAnnotation
+    contactImageScanners: ScanIfMissing
+    timeoutSeconds: 10
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 50m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+  scannerV4:
+    db:
+      persistence:
+        persistentVolumeClaim:
+          claimName: scanner-v4-db
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 200m
+        limits:
+          memory: 4Gi
+          cpu: 2
+    indexer:
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 250m
+        limits:
+          memory: 6Gi
+          cpu: 4
+    scannerComponent: AutoSense
+  scanner:
+    analyzer:
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 250m
+        limits:
+          memory: 2Gi
+          cpu: 1
+    db:
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 200m
+        limits:
+          memory: 2Gi
+          cpu: 1
+  perNode:
+    collector:
+      collection: CORE_BPF
+      resources:
+        requests:
+          memory: 200Mi
+          cpu: 60m
+        limits:
+          memory: 1Gi
+          cpu: 750m
+    compliance:
+      resources:
+        requests:
+          memory: 10Mi
+          cpu: 10m
+        limits:
+          memory: 512Mi
+          cpu: 1
+    nodeInventory:
+      resources:
+        requests:
+          memory: 10Mi
+          cpu: 10m
+        limits:
+          memory: 512Mi
+          cpu: 1
+...
 ```
