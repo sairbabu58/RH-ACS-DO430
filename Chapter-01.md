@@ -620,3 +620,14 @@ $ oc logs deployment/sensor | grep "central CA"
 common/centralclient: 2024/10/23 14:06:09.321506 grpc_connection.go:92: Info: Add 1 central CA certs to gRPC connection
 common/centralclient: 2024/10/23 14:06:09.321611 grpc_connection.go:94: Info: Add central CA cert with CommonName: 'central-stackrox.apps.ocp4.example.com'
 ```
+
+```
+RHACS web console https://central.apps.ocp4.example:443 is accessable but with "Insecure"
+
+How to access RHACS console with secure ways.
+
+Change the default passthrough termination to reencrypt [please read the below soluction and follow the process]
+
+https://access.redhat.com/solutions/7019861
+https://access.redhat.com/solutions/7055915
+```
