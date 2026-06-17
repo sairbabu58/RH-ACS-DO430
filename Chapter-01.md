@@ -1,12 +1,17 @@
-## RHACM operator installation
-## ACS Central configuration - Customization
-## How to get default username/password
-## How to access ACS webui
+### RHACM operator installation
+### ACS Central configuration - Customization
+### How to get default username/password
+### How to access ACS webui
 
-## Install Secured Cluster
-## Secure Cluster - custom resources
-## How to generate InitBundles
-## How to add hub cluster to RHACM 
+### Install Secured Cluster
+### Secured Cluster - custom resources
+### How to generate InitBundles
+### How to add hub cluster to RHACS
+### How to Add Managed cluster to RHACS
+
+### Troubleshooting
+
+### Configure Custom Certificate
 
 
 
@@ -575,3 +580,12 @@ $ watch oc get deploy,daemonset,svc  -l app.kubernetes.io/instance=managed-clust
 -> Bashboard
 -> Risk
 ```
+
+#### Configure Custom Certificate
+
+Note: Dont change the current Route TLS=Passthrough to any Edge/Reencription. Cause it will make issues while you do the upgrade.
+Options:
+1- Create a new route with Edge/Reencription. it should work
+2- Generate new certificate and configuration it. follow the process below 
+
+
