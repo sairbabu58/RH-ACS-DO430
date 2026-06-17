@@ -42,3 +42,13 @@ Events:
   Warning  FailedScheduling  24m                 default-scheduler  0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
   Warning  FailedScheduling  16m (x3 over 24m)   default-scheduler  0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
 ```
+**-> RHACS web console https://central.apps.ocp4.example:443 is accessable but with "Insecure"**
+```
+How to access RHACS console with secure ways.
+
+Change the default passthrough termination to reencrypt [please read the below soluction and follow the process]
+
+https://access.redhat.com/solutions/7019861
+https://access.redhat.com/solutions/7055915
+
+```
