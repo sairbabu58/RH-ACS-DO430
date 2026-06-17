@@ -584,8 +584,39 @@ $ watch oc get deploy,daemonset,svc  -l app.kubernetes.io/instance=managed-clust
 #### Configure Custom Certificate
 
 Note: Dont change the current Route TLS=Passthrough to any Edge/Reencription. Cause it will make issues while you do the upgrade.
+
 Options:
+
 1- Create a new route with Edge/Reencription. it should work
+
 2- Generate new certificate and configuration it. follow the process below 
 
+```
+-> generate the new certificate
+-> Create a secret callled central-default-tls-cert
+$ oc get secret central-default-tls-cert
+$ oc create secret tls central-default-tls-cert \
+  --cert /etc/pki/CA/certs/central-stackrox.apps.ocp4.example.com.crt \
+  --key /etc/pki/CA/private/central-stackrox.apps.ocp4.example.com.key
+```
 
+```
+$ oc delete pod -l app=central
+$ oc delete pod -l app=sensor
+```
+
+```
+$ oc logs deployment/central | \
+  grep "TLS certificate loaded"
+pkg/mtls/certwatch: 2024/10/23 12:39:12.788051 certwatch.go:61: Info: TLS certificate loaded, using the following cert for HTTPS: (SerialNumber: 296651805320997907283810950492481849897554960302, Subject: CN=central-stackrox.apps.ocp4.example.com,O=Example\, Inc.,L=Raleigh,ST=North Carolina,C=US, DNSNames, [central-stackrox.apps.ocp4.example.com]), watch dir: "/run/secrets/stackrox.io/default-tls-cert"
+pkg/mtls/certwatch: 2024/10/23 12:39:12.968380 certwatch.go:61: Info: TLS certificate loaded, using the following cert for HTTPS: (SerialNumber: 8840239664397729190, Subject: CN=central.stackrox.svc, DNSNames, [central.stackrox.svc central.stackrox.svc.cluster.local]), watch dir: "/run/secrets/stackrox.io/monitoring-tls"
+
+$ oc logs deployment/sensor | grep "central CA"
+common/centralclient: 2024/10/23 13:49:57.203752 grpc_connection.go:92: Info: Add 1 central CA certs to gRPC connection
+common/centralclient: 2024/10/23 13:49:57.203834 grpc_connection.go:94: Info: Add central CA cert with CommonName: 'central-stackrox.apps.ocp4.example.com'
+
+
+$ oc logs deployment/sensor | grep "central CA"
+common/centralclient: 2024/10/23 14:06:09.321506 grpc_connection.go:92: Info: Add 1 central CA certs to gRPC connection
+common/centralclient: 2024/10/23 14:06:09.321611 grpc_connection.go:94: Info: Add central CA cert with CommonName: 'central-stackrox.apps.ocp4.example.com'
+```
